@@ -1,0 +1,95 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<Orders>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Siparişler</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Sipariş listesi</li>
+</ol>
+<hr />
+
+<table class="table mt-3" id="tblOrderList">
+    <thead class="thead-dark">
+        <tr>
+            <th>Sipariş No</th>
+            <th>Müşteri adı soyadı</th>
+            <th>Ödeme Tipi</th>
+            <th>Sipariş Durumu</th>
+            <th>Total</th>
+            <th>Tarih</th>
+            <th>Ip Adres</th>
+            <th>Güncelle</th>
+            <th>Detay</th>
+            <th>Kargo</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Customer.NameSurname</td>
+            <td>@item.PaymentType.Property</td>
+            <td>@item.OrderStatus.Property</td>
+            <td>₺@item.Total</td>
+            <td>@item.GMT</td>
+            <td>@item.Hostname</td>
+            <td>@Html.ActionLink("Güncelle", "Update", "Order", new { oId = item.Id }, new { @class = "btn btn-danger" })</td>
+            <td>@Html.ActionLink("Detay", "Detail", "OrderDetails", new { oNO = item.Id }, new { @class = "btn btn-info" })</td>
+            <td><button type="button" class="btn btn-primary Add-Cargo-Info" data-toggle="tooltip" title="Edit" data-id="@item.Id">Kargo bilgisi ekle</button></td>
+        </tr>
+    }
+</table>
+
+<div id="AddCargoInfo" class="modal" role="dialog" data-url="@Url.Action("Add", "CargoInfo")"></div>
+
+<!-- Ürün listesini göstermek için kullandığımız datatable için gerekli dosyalar -->
+<!-- datatables.net/download/ adresinde seçilerek buraya eklenebilir. -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.js"></script>
+
+
+<script>
+    //Datatable kullanmak için parantez içine tablo id sini yazmamız gerekiyor.
+    $('#tblOrderList').dataTable({
+
+        //datatable türkçe dil dosyası
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+        },
+
+        //butonlara varsayılan olarak btn-secondary sınıfı veriliyor. Bunu kaldırım butonları yukarıdaki gibi kendi isteğimize göre özelleştirmek için aşağıdaki kodu kullandık.
+        initComplete: function (settings, json) {
+            $(".btn").removeClass("btn-secondary");
+        },
+        buttons: {
+            buttons: [
+                { extend: 'excelHtml5', className: 'btn btn-outline-dark mr-2', text: "<i class='far fa-file-excel'></i> Excel'e aktar" },
+                { extend: 'pdfHtml5', className: 'btn btn-outline-dark mr-2', text: '<i class="far fa-file-pdf"></i> PDF yap' }
+            ]
+        },
+        //dom özelliği tablo konteynırının class özelliklerini belirlememizi sağlar. Detaylı dokümantasyon aşağıdaki linkte
+        // datatables.net/reference/option/dom
+        dom: "<'row'<'col-sm-12 col-md-4'l><'col-md-4'B><'col-sm-12 col-md-4'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    });
+
+    $(document).ready(function () {
+        $('#tblOrderList tbody').on('click', '.Add-Cargo-Info', function () {
+            var url = $('#AddCargoInfo').data('url');
+            var id = $(this).attr('data-id');
+            $.get(url + '?oId=' + id, function (data) {
+                $("#AddCargoInfo").html(data);
+                $("#AddCargoInfo").modal('show');
+            });
+        });
+    });
+
+</script>

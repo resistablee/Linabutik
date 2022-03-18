@@ -1,0 +1,72 @@
+﻿@using _201224_LinaButikPanel.Models
+@model CargoInfo
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Kategori Ekle</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Add", "CargoInfo", FormMethod.Post, new { @Id = "CargoInfoAdd" }))
+            {
+                @Html.HiddenFor(x=>x.OrderID)
+                @Html.HiddenFor(x=>x.CustomerID)
+                @Html.HiddenFor(x=>x.AddressID)
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CargoCompanyID)
+                    @Html.DropDownListFor(x => x.CargoCompanyID, (IEnumerable<SelectListItem>)ViewBag.CargoCompaines, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.CargoCompanyID, "", new { @style = "color: red;" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.TruckNumber)
+                    @Html.TextBoxFor(x => x.TruckNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.TruckNumber, "", new { @style = "color: red;" })
+                </div>
+
+                <button type="button" id="btnsubmit" value="submit" class="btn btn-success">Ekle</button>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnsubmit').click(function (e) {
+            var valdata = $('#CargoInfoAdd').serialize();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/CargoInfo/Add',
+                data: valdata,
+                success: function (data) {
+                    if (data) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Kargo bilgisi girildi!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/Order/List";
+                            }
+                            else {
+                                Swal.fire('Hata Oluştu!', 'İşlem sırasında hata oluştu?', 'warning');
+                                return false;
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Bu ürüne ait bir kargo bilgisi var veya işlem sırasında bir hata meydana geldi!'
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>

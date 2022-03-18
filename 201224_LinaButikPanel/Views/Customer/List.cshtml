@@ -1,0 +1,90 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<Customers>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Müşteriler</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Müşteri listesi</li>
+</ol>
+<hr />
+<div class="row mb-3">
+    <div class="col-md">
+        @Html.ActionLink("Müşteri oluştur", "Add", "Customer", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+
+<table class="table table-hover" id="tblCustomers">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Ad Soyad</th>
+            <th>E-posta</th>
+            <th>Şifre</th>
+            <th>Telefon numarası</th>
+            <th>Doğum tarihi</th>
+            <th>Cinsiyet</th>
+            <th>Durum</th>
+            <th>Güncelle</th>
+            <th>Siparişler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '#'">
+                <td>@item.Id</td>
+                <td>@item.NameSurname</td>
+                <td>@item.Mail</td>
+                <td>@item.Password</td>
+                <td>@item.TelephoneNumber</td>
+                <td>@item.DateOfBirth.ToShortDateString()</td>
+                <td>@item.Gender.Property</td>
+                <td>@item.Status</td>
+                <td>@Html.ActionLink("Güncelle", "Update", "Customer", new { cId = item.Id }, new { @class = "btn btn-warning" })</td>
+                <td>@Html.ActionLink("Siparişler", "CustomerOrders", "Customer", new { cId = item.Id }, new { @class = "btn btn-info" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Ürün listesini göstermek için kullandığımız datatable için gerekli dosyalar -->
+<!-- datatables.net/download/ adresinde seçilerek buraya eklenebilir. -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.js"></script>
+
+
+<script>
+    //Datatable kullanmak için parantez içine tablo id sini yazmamız gerekiyor.
+    $('#tblCustomers').dataTable({
+
+        //datatable türkçe dil dosyası
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+        },
+
+        //butonlara varsayılan olarak btn-secondary sınıfı veriliyor. Bunu kaldırım butonları yukarıdaki gibi kendi isteğimize göre özelleştirmek için aşağıdaki kodu kullandık.
+        initComplete: function (settings, json) {
+            $(".btn").removeClass("btn-secondary");
+        },
+        buttons: {
+            buttons: [
+                { extend: 'excelHtml5', className: 'btn btn-outline-dark mr-2', text: "<i class='far fa-file-excel'></i> Excel'e aktar" },
+                { extend: 'pdfHtml5', className: 'btn btn-outline-dark mr-2', text: '<i class="far fa-file-pdf"></i> PDF yap' }
+            ]
+        },
+        //dom özelliği tablo konteynırının class özelliklerini belirlememizi sağlar. Detaylı dokümantasyon aşağıdaki linkte
+        // datatables.net/reference/option/dom
+        dom: "<'row'<'col-sm-12 col-md-4'l><'col-md-4'B><'col-sm-12 col-md-4'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row mb-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    });
+
+</script>

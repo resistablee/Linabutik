@@ -1,0 +1,79 @@
+﻿@using _201224_LinaButikPanel.Models
+@{Context asd = new Context(); }
+@model List<Products>
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<hr />
+
+<div class="container-fluid p-0">
+    <div class="row w-100 m-0">
+        <div class="col-2 p-0">
+            <div class="row-cols-1">
+                <div class="col-12">
+                    <div class="row">
+                        <h5 class="pl-0">Kategoriler</h5>
+                    </div>
+                    <div class="row">
+                        @Html.Action("CategoryList", "ProductProperty")
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row-cols-1">
+                <div class="col">
+                    <div class="row">
+                        <h5 class="pl-0">Renkler</h5>
+                    </div>
+                    <div class="row">
+                        @Html.Action("ColorList", "ProductProperty")
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row-cols-1">
+                <div class="col">
+                    <div class="row">
+                        <h5 class="pl-0">Bedenler</h5>
+                    </div>
+                    <div class="row">
+                        @Html.Action("SizeList", "ProductProperty")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-10 p-0">
+            <div class="row w-100 m-0">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item active"><a href="https://localhost:44345/" style="text-decoration:none;">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a href="/Sale/UrunList" style="text-decoration:none;">Ürünler</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.CategoryName</li>
+                </ol>
+            </div>
+            <div class="row w-100 m-0">
+                <div class="card-deck justify-content-between p-0">
+                    @foreach (var item in Model)
+                    {
+                        <div class="mb-5">
+                            <div class="card shadow mr-0" style="width: 22rem; height: 38rem">
+                                <div style="height: 67%;">
+                                    <img class="card-img-top" src="@asd.ProductImage.Where(x => x.ProductID == item.Id).Select(x => x.URL).FirstOrDefault().ToString()" alt="Card image cap" style="object-fit:cover; position:relative; height: 100%;">
+                                </div>
+                                <div class="card-body bg-light">
+                                    <h4 class="card-title">@item.Name</h4>
+                                    <h6 class="card-subtitle text-muted">@item.Brand.Brand</h6>
+                                    <hr />
+                                    <h4 class="card-title">@item.Price TL</h4>
+                                    @Html.ActionLink("Sepete ekle", "ProductDetail", "Sale", new { pCode = item.ProductCode }, new { @class = "btn btn-warning shadow " })
+                                    @Html.ActionLink("Detay", "ProductDetail", "Sale", new { pCode = item.ProductCode }, new { @class = "btn btn-info  " })
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

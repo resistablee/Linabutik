@@ -1,0 +1,10 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<Features>
+
+
+<div class="list-group" style="width:90%;">
+    @foreach (var item in Model)
+    {
+        <a href="#" class="list-group-item list-group-item-action bg-danger text-white">@item.Property</a>
+    }
+</div>

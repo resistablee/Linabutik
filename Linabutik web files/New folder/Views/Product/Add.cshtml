@@ -1,0 +1,127 @@
+﻿@model _201224_LinaButikPanel.Models.MM_OrderDetails
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Ürünler</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Ürün ekle</li>
+</ol>
+<hr />
+
+@using (Html.BeginForm("Add", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @Id="pAdd" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.CategoryID)
+        @Html.DropDownListFor(x => x.product.CategoryID, (List<SelectListItem>)ViewBag.Categories, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.CategoryID, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.BrandID)
+        @Html.DropDownListFor(x => x.product.BrandID, (List<SelectListItem>)ViewBag.Brands, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.BrandID, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.Name)
+        @Html.TextBoxFor(x => x.product.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.Name, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.ColorID)
+        @Html.DropDownListFor(x => x.product.ColorID, (List<SelectListItem>)ViewBag.Colors, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.ColorID, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.Sizes)
+        @Html.DropDownListFor(x => x.product.Sizes, (List<SelectListItem>)ViewBag.Size, new { @class = "form-control", @multiple = "multiple" })
+        @Html.ValidationMessageFor(x => x.product.SizeID, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.Price)
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">₺</span>
+            </div>
+            @Html.TextBoxFor(x => x.product.Price, new { @class = "form-control", @placeholder = "Price", @type = "number", @min = 1 })
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+            @Html.ValidationMessageFor(x => x.product.Price, "", new { @style = "color: red;" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.Description)
+        @Html.TextAreaFor(x => x.product.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.Description, "", new { @style = "color: red;" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.Stock)
+        @Html.TextBoxFor(x => x.product.Stock, new { @class = "form-control", @placeholder = "Stock", @type = "number", @min = 1 })
+        @Html.ValidationMessageFor(x => x.product.Stock, "", new { @style = "color: red;" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.product.SaleStatus)
+        @Html.DropDownListFor(x => x.product.SaleStatus, new List<SelectListItem>
+   {
+     new SelectListItem { Text = "Satışta", Value = "true"},
+     new SelectListItem { Text = "Satışa kapalı", Value = "false"}
+   },
+   new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.product.SaleStatus, "", new { @style = "color: red;" })
+    </div>
+
+
+    <button type="button" id="btnsubmit" class="btn btn-success">Ürün ekle</button>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnsubmit').click(function (e) {
+            var valdata = $('#pAdd').serialize();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Product/Add',
+                data: valdata,
+                success: function (data) {
+                    if (data) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Ürün eklendi!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/Product/List";
+                            }
+                            else {
+                                Swal.fire('Hata Oluştu!', 'İşlem sırasında hata oluştu?', 'warning');
+                                return false;
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'İşlem sırasında bir hata meydana geldi!'
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>

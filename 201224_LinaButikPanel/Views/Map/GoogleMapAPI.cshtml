@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "GoogleMapAPI";
+}
+<h2 class="mt-3">Harita</h2>
+<div class="row">
+    <div class="col-sm-12">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="/Panel/">Home</a></li>
+            <li class="breadcrumb-item active">Harita</li>
+        </ol>
+    </div>
+</div>
+<hr />
+<div class="row mt-2">
+
+    <!-- Kordinatları girilen konumu işaretleme -->
+    <div class="col-4">
+        <div class="row">
+            <div class="col">
+                <h5>Yazılan kordinata göre marker koyma</h5>
+            </div>
+        </div>
+        <hr class="mt-0" />
+        <div class="row">
+            <div class="col">
+                <input id="enlem" type="text" class="form-control" placeholder="Enlem">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <input id="boylam" type="text" class="form-control" placeholder="Boylam">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <input id="infometin" type="text" class="form-control" placeholder="Info metin">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button id="tikla" class="btn btn-success" type="button" onclick="isaret()">Yazılanı işaretle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mevcut konum alma -->
+    <div class="col-4">
+        <div class="row">
+            <div class="col">
+                <h5>Şu anki konum bilgisini alma</h5>
+            </div>
+        </div>
+        <hr class="mt-0" />
+        <div class="row">
+            <div class="col">
+                <input id="konumum" type="text" class="form-control" placeholder="Konumum">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button id="tikla" class="btn btn-success" type="button" onclick="konumal()">Konum İşaretle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kaydırılabilir markerin kordinatlarını alma -->
+    <div class="col-4">
+        <div class="row">
+            <div class="col">
+                <h5>Kaydırılabilir markerin kordinatı</h5>
+            </div>
+        </div>
+        <hr class="mt-0" />
+        <div class="row">
+            <div class="col">
+                <input id="kaydirilabilirkordinat" type="text" class="form-control" placeholder="Kordinat">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button id="tikla" class="btn btn-success" type="button" onclick="KaydirilabilirMarker()">Kaydırılabilir marker</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="map" class="mt-4 mb-2" style="width: 85vw; height: 64vh;"></div>
+
+
+<script>
+
+    //Google Map API dokümantasyon: https://developers.google.com/maps/documentation/javascript/overview
+    let map;
+    let myHomeCoordinate = { lat: 37.7406885, lng: 29.1211469 }; //evim
+    function initMap() {
+
+        //Haritada göstermek için kordinatlarını yazdım
+
+        const PAUHospitalCoordinate = { lat: 37.7378182, lng: 29.1072259 }; // Paü hastanes,
+        //const asd = { lat: document.getElementById("enlem").value, lng: document.getElementById("boylam").value };
+
+        //Haritanın ayarlarını tanımladık
+        const mapOptions = {
+            zoom: 15,
+            center: myHomeCoordinate,
+            //gestureHandling: "none", //Haritada elle gezinmedi devre dışı bırakır
+            //zoomControl: false, //Haritaya zoom yapmayı devre dışı bırakır
+            //Dokumantason: https://developers.google.com/maps/documentation/javascript/maptypes#BasicMapTypes
+            //mapTypeId: "satellite", //Harita tipi seçimi
+        }
+
+        //Haritayı tanımladık
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        //Haritada trafik yoğunluğu göstermek için 2 satır kod yazıyoruz
+        //const trafficLayer = new google.maps.TrafficLayer();
+        //trafficLayer.setMap(map);
+
+        //Bir tane örnek marker ekledik
+        AddMarker({
+            Coordinates: PAUHospitalCoordinate,
+            content: "<h6>Burası Pamukkale Üniversitesi bak.</h6>"
+        });
+    }
+
+
+    //Anlık konum alma fonksiyonuz
+    function konumal() {
+        //Konumu alarak konumumuza marker ekledik
+        navigator.geolocation.getCurrentPosition(function (position) {
+            //Haritaya tıklandığıdna çalışacak
+            //Marker ekledik
+            AddMarker({
+                Coordinates: { lat: position.coords.latitude, lng: position.coords.longitude },
+                content: "<h6>Bak şu an buradasın!</h6>"
+            });
+            //Marker hareket ettirildiğine çalışacak method
+            document.getElementById("konumum").value = position.coords.latitude + ',' + position.coords.longitude;
+        });
+    }
+
+    function isaret() {
+        var latitude = document.getElementById("enlem").value;
+        var longtitude = document.getElementById("boylam").value;
+
+        var myLatLng = new google.maps.LatLng(latitude, longtitude);
+        AddMarker({
+            Coordinates: myLatLng,
+            content: '<h6>' + document.getElementById("infometin").value + '</h6>',
+        });
+    }
+
+
+    //Kaydırılabilir bir marker oluşturuyoruz ve seçilen yerin kordinatını textboxa yazıyoruz
+    function KaydirilabilirMarker() {
+
+        //Marker oluşturduk
+        const marker = new google.maps.Marker({
+            position: myHomeCoordinate,
+            draggable: true, //Kaydırılabilirliğini aktif ettik
+            map: map
+        });
+
+        //Bir info kutusu oluşturduk. Content parametresine HTML kodları da yazılabilir.
+        const infowindow = new google.maps.InfoWindow({
+            content: "<p>Bu bir kaydırılabilir markerdır ve sürükleyip bıraktığın yerin kordinatını sana verir.</p>",
+        });
+
+        //Markere tıklandığında info kutusunu açtık
+        marker.addListener("click", function () {
+            infowindow.open(map, marker);
+        });
+
+        //Marker hareket ettirildiğine çalışacak method
+        google.maps.event.addListener(marker, "drag", function () {
+            document.getElementById("kaydirilabilirkordinat").value = marker.position.toUrlValue();
+        });
+    }
+
+
+
+    //İconları dürtüklemek istersen ubun kullanıcaksın
+    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+
+
+    //Marker eklemek için bir tane metod tanımladık
+    function AddMarker(Options) {
+        //Kırmızı nokta ekledik yani Marker
+        const marker = new google.maps.Marker({
+            animation: google.maps.Animation.DROP,
+            position: Options.Coordinates,
+            map: map,
+            center: Options.Coordinates,
+            //icon: iconBase + 'parking_lot_maps.png', //Kırmızı nokta olması için bunu sil
+            title: "Evim evim güzel evim"
+        });
+
+        //Bir info kutusu oluşturduk. Content parametresine HTML kodları da yazılabilir.
+        const infowindow = new google.maps.InfoWindow({
+            content: Options.content,
+        });
+
+        //Markere tıklandığında info kutusunu açtık
+        marker.addListener("click", function () {
+            infowindow.open(map, marker);
+        });
+    }
+</script>

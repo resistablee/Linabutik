@@ -1,0 +1,76 @@
+﻿@model _201224_LinaButikPanel.Models.Managers
+@{
+    Layout = "~/Views/Shared/_VerificationLayout.cshtml";
+}
+
+
+<div class="login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary mb-0" style="border-top: 3px solid #A54DA1;">
+            <div class="card-header text-center">
+                <a id="Title" href="../../index2.html" class="h1">Linabutik</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Admin girişi</p>
+
+                @using (Html.BeginForm("AdminLogin", "Verification", FormMethod.Post))
+                {
+                    <!-- Kullanıcı adı -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Username, new { @class = "form-control", @type = "text", @placeholder = "Kullanıcı adı" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Username, "", new { @style = "color: red;" })
+                    </div>
+
+                    <!-- Şifre -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password", aria_describedby = "passwordHelpBlock", @placeholder = "Şifre" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Password, "", new { @style = "color: red;" })
+                    </div>
+
+                    <!-- Beni hatırla ve Giriş yap -->
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember" style="font-weight: 400 !important">
+                                    Beni hatırla
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-block" style="background-color: #A54DA1; color: #ffffff">Giriş yap</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                }
+
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <a href="#" style="color: #A54DA1;">Şifremi unuttum!</a>
+                    </div>
+                    <div class="col-6" style="text-align: end;">
+                        <a href="/Verification/Register" class="text-center" style="color: #A54DA1;">Yeni üyelik oluştur</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <div class="login-box" style="padding:8px; background-color: #A54DA1; text-align:center; border-radius: 0 0 0.5rem 0.5rem ;">
+        <i class="fas fa-arrow-left" style="color:white;"></i>
+        <a href="/Panel" style="text-decoration:none; color:white; font-size: 1.1rem;">Panel'e dön</a>
+    </div>
+</div>

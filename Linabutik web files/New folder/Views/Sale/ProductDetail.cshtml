@@ -1,0 +1,158 @@
+﻿@model _201224_LinaButikPanel.Models.MM_OrderDetails
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="container-fluid p-0 mt-3">
+    <div class="row w-100 m-0">
+        <ol class="breadcrumb ">
+            <li class="breadcrumb-item"><a href="https://localhost:44345/" style="text-decoration:none;">Anasayfa</a></li>
+            <li class="breadcrumb-item"><a href="/Sale/UrunList" style="text-decoration:none;">Ürünler</a></li>
+            <li class="breadcrumb-item"><a href="/Sale/UrunList?Kategori=@Model.product.Category.Property" style="text-decoration:none;">@Model.product.Category.Property</a></li>
+            <li class="breadcrumb-item active">#@Model.product.ProductCode</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col">
+        <div class="row row-cols-1">
+            @using (Html.BeginForm("AddToCart", "Basket", FormMethod.Post))
+            {
+                @Html.HiddenFor(x => x.product.ProductCode)
+                @Html.HiddenFor(x => x.product.ColorID)
+                @Html.HiddenFor(x => x.product.Price)
+                @Html.HiddenFor(x => x.product.Id)
+                <div class="form-group">
+                    <div class="row-cols-1">
+                        <div class="col">
+                            @Html.Label("Müşteri")
+                            @Html.DropDownList("cId", (List<SelectListItem>)ViewBag.Customers, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="row-cols-1 mt-3">
+                        <div class="col-auto">
+                            <div class="row row-cols-1 flex-row flex-nowrap" style="height:600px">
+                                <div class="col-auto">
+                                        <img src="@Model.pImage.URL" class="img-thumbnail shadow" style="width: 400px; height: 100%; object-fit: cover" />
+                                </div>
+                                <div class="col-auto ml-4">
+                                    <div class="row">
+                                        <div class="col"><h2 class="text-body">@Model.product.Name</h2></div>
+                                    </div>
+                                    <div class="row text-primary mb-2">
+                                        <div class="col">
+                                            <h4>@Model.product.Brand.Brand</h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5>Ürün puanı: 5</h5>
+                                        </div>
+                                        <div class="col-6 pl-0">
+                                            <a href="#" class="text-muted">545 Değerlendirme</a>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <h2 class="text-dark mb-4">@Model.product.Price TL</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            @Html.Label("Renkler")
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        @foreach (var item in Model.colors)
+                                        {
+                                            <div class="col-auto pr-0 mb-4">
+                                                @Html.ActionLink(item.Text, "ProductDetail", "Sale", new { pCode = Model.product.ProductCode, cId = Convert.ToInt32(item.Value) }, new { @class = "btn btn-light" })
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                @Html.Label("Beden")
+                                                @Html.DropDownListFor(x => x.product.SizeID, Model.sizes, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            @Html.Label("Adet")
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4 d-flex">
+
+                                            @Html.TextBox("piece", 1, new { @class = "form-control", @type = "number", @min = 1 })
+                                        </div>
+                                        <div class="col-8">
+                                            <button type="submit" class="btn btn-warning">Sepete ekle</button>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row mt-4">
+                                        <div class="col-auto">
+                                            <a href="#" class="text-decoration-none text-secondary h5">
+                                                <i class="far fa-heart font-weight-bold"></i>
+                                                <span>Beğen</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="#" class="text-decoration-none text-secondary h5">
+                                                <i class="far fa-bookmark"></i>
+                                                <span>İndirim alarmı</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+        <div class="row-cols-1">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#description">Açıklama</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#comment">Yorumlar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#paymentOptions">Alışveriş seçenekleri</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" id="description">
+                    <p>
+                        @Model.product.Description
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="comment">
+                    <p>
+                        Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri M.Ö. 45 tarihinden bu yana klasik Latin edebiyatına kadar uzanan 2000 yıllık bir geçmişi vardır. Virginia'daki Hampden-Sydney College'dan Latince profesörü Richard McClintock, bir Lorem Ipsum pasajında geçen ve anlaşılması en güç sözcüklerden biri olan 'consectetur' sözcüğünün klasik edebiyattaki örneklerini incelediğinde kesin bir kaynağa ulaşmıştır. Lorm Ipsum, Çiçero tarafından M.Ö. 45 tarihinde kaleme alınan "de Finibus Bonorum et Malorum" (İyi ve Kötünün Uç Sınırları) eserinin 1.10.32 ve 1.10.33 sayılı bölümlerinden gelmektedir. Bu kitap, ahlak kuramı üzerine bir tezdir ve Rönesans döneminde çok popüler olmuştur. Lorem Ipsum pasajının ilk satırı olan "Lorem ipsum dolor sit amet" 1.10.32 sayılı bölümdeki bir satırdan gelmektedir.
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="paymentOptions">
+                    <p>
+                        Lorem Ipsum pasajlarının birçok çeşitlemesi vardır. Ancak bunların büyük bir çoğunluğu mizah katılarak veya rastgele sözcükler eklenerek değiştirilmişlerdir. Eğer bir Lorem Ipsum pasajı kullanacaksanız, metin aralarına utandırıcı sözcükler gizlenmediğinden emin olmanız gerekir. İnternet'teki tüm Lorem Ipsum üreteçleri önceden belirlenmiş metin bloklarını yineler. Bu da, bu üreteci İnternet üzerindeki gerçek Lorem Ipsum üreteci yapar. Bu üreteç, 200'den fazla Latince sözcük ve onlara ait cümle yapılarını içeren bir sözlük kullanır. Bu nedenle, üretilen Lorem Ipsum metinleri yinelemelerden, mizahtan ve karakteristik olmayan sözcüklerden uzaktır.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>

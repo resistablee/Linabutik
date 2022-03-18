@@ -1,0 +1,126 @@
+﻿@model _201224_LinaButikPanel.Models.Customers
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_VerificationLayout.cshtml";
+}
+
+<script type="text/javascript">
+    $("#TelephoneNumber").inputmask({ "mask": "(999) 999-9999" });
+    $('#TelephoneNumber').inputmask({ "placeholder": "" });
+</script>
+<h2>@ViewBag.asd</h2>
+<div class="register-page">
+    <div class="register-box">
+        <div class="card card-outline card-primary" style="border-top: 3px solid #A54DA1;">
+            <div class="card-header text-center">
+                <a id="Title" href="../../index2.html" class="h1">Linabutik</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Yeni bir üyelik için kayıt olun</p>
+
+                @using (Html.BeginForm("Add", "Customer", FormMethod.Post))
+                {
+                    <!-- Ad Soyad -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.NameSurname, new { @class = "form-control", @placeholder = "Ad soyad" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.NameSurname, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Telefon numarası -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.TelephoneNumber, new { @class = "form-control", @placeholder = "Telefon numarası", @type = "tel", @data_inputmask = "'mask': '(999) 999-9999'", @data_mask = true })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-phone"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.TelephoneNumber, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- E-posta -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Mail, new { @class = "form-control", @type = "email", @placeholder = "E-posta" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Mail, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Şifre -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password", @placeholder = "Şifre", aria_describedby = "passwordHelpBlock" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.TelephoneNumber, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Şifre tekrar -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.RetypePassword, new { @class = "form-control", @type = "password", @placeholder = "Şifre tekrar", aria_describedby = "passwordHelpBlock" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-undo"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Mail, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Doğum tarihi -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.DateOfBirth, new { @class = "form-control", @type = "text", @placeholder = "Doğum tarihi", @data_inputmask_alias = "datetime", data_inputmask_inputformat = "dd/mm/yyyy", @data_mask = true })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-birthday-cake"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Cinsiyet -->
+                    <div class="input-group mb-3">
+                        @Html.DropDownListFor(x => x.GenderID, (List<SelectListItem>)ViewBag.Genders, new { @class = "form-control" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-venus-mars"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Gender, "", new { @style = "color: red; width: 100%;" })
+                    </div>
+
+                    <!-- Üyelik sözleşmesi -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                                <label for="agreeTerms" style="font-weight: 200 !important; font-size: 0.999rem;">
+                                    <a href="#" style="color: #A54DA1">Üyelik sözleşmesini</a> okudum kabul ediyorum.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kayıt ol butonu -->
+                    <div class="row mt-2">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-block" style="background-color: #A54DA1; color: #ffffff">Kayıt ol</button>
+                        </div>
+                        <div class="col-8 d-flex align-items-end justify-content-end">
+                            <a href="/Verification/CustomerLogin" class="text-center" style="color: #A54DA1">Zaten bir hesabın var mı?</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h2>Index</h2>
+<button id="loadPartialView" type="button"  class="btn btn-success">Checkout <span class="glyphicon glyphicon-play"></span> 
+</button>
+
+<div id="Display"></div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#loadPartialView").click(function () {
+			$.get('@Url.Action("Liked", "Customer")', {}, function (response) {
+				$("#Display").html(response);
+			});
+		});
+	});
+</script>

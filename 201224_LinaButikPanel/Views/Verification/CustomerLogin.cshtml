@@ -1,0 +1,135 @@
+﻿@model _201224_LinaButikPanel.Models.CustomerAuthentication
+@{
+    Layout = "~/Views/Shared/_VerificationLayout.cshtml";
+}
+
+
+<div class="login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary mb-0" style="border-top: 3px solid #A54DA1;">
+            <div class="card-header text-center">
+                <a id="Title" href="../../index2.html" class="h1">Linabutik</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Oturumunuzu başlatmak için giriş yapın</p>
+
+                @using (Html.BeginForm("CustomerLogin", "Verification", FormMethod.Post, new { @Id = "FormLogin" }))
+                {
+                    <!-- E-posta -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Mail, new { @class = "form-control", @type = "email", @placeholder = "E-posta" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Mail, "", new { @class = "text text-danger w-100" })
+                    </div>
+
+                    <!-- Şifre -->
+                    <div class="input-group mb-3">
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password", aria_describedby = "passwordHelpBlock", @placeholder = "Şifre" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text text-danger w-100" })
+                    </div>
+
+                    <!-- Beni hatırla ve Giriş yap -->
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                @Html.CheckBoxFor(x => x.remember, new { @class = "form-control" })
+                                <label for="remember" style="font-weight: 400 !important">
+                                    Beni hatırla
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button id="btnLogin" type="button" class="btn btn-block" style="background-color: #A54DA1; color: #ffffff">Giriş yap</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                }
+
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <a href="#" style="color: #A54DA1;">Şifremi unuttum!</a>
+                    </div>
+                    <div class="col-6" style="text-align: end;">
+                        <a href="/Verification/Register" class="text-center" style="color: #A54DA1;">Yeni üyelik oluştur</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <div class="login-box" style="padding:8px; background-color: #A54DA1; text-align:center; border-radius: 0 0 0.5rem 0.5rem ;">
+        <i class="fas fa-arrow-left" style="color:white;"></i>
+        <a href="/Panel" style="text-decoration:none; color:white; font-size: 1.1rem;">Panel'e dön</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnLogin').click(function (e) {
+            var formdata = $('#FormLogin').serialize();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Verification/CustomerLogin',
+                data: formdata,
+                success: function (data) {
+                    if (data == 1) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Kullanıcı doğrulandı!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/";
+                            }
+                        });
+                    }
+                    else if (data == 2) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Doğrulama hatası!',
+                            text: 'Kullanıcı adı veya şifre yanlış!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                    else if (data == 3) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Bilgi hatası!',
+                            text: 'Girdiğiniz bilgileri kontrol ediniz!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                    else if (data == 4) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Teknik arıza!',
+                            text: 'Teknik bir hata meydana geldi!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                }
+            });
+        });
+    });
+</script>

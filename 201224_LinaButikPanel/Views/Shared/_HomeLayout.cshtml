@@ -1,0 +1,272 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>UrunList</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Admin panel</title>
+
+    <link href="~/Content/styles.css" rel="stylesheet" />
+
+    <!-- Bootstrap5 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Bootstrap5 Bundle -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- Fontawsome CSS v5.15.1 -->
+    <link href="~/Content/fontawesome-free/css/all.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Bootstrap5 JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <!-- Jquery JS v3.5.1 -->
+    <script src="~/Content/jquery-3.5.1.min.js"></script>
+
+    <!-- Sweetalert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.0/dist/sweetalert2.min.js"></script>
+
+    <!-- Jquery validation doğrulamaları -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js" integrity="sha512-EanukVTZc4W9tUCLnDl069Izidg49PcNRKO1upLzKt9ajq66i+bXOtlzXcIbRhb6vVEGF6BCc8wQi5T1ztCpTQ==" crossorigin="anonymous"></script>
+
+    @*<link href="~/Content/select2.min.css" rel="stylesheet" />
+        <script src="~/Content/select2.min.js"></script>
+            <link href="~/Content/select2-bootstrap4.css" rel="stylesheet">*@
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="header-container">
+            <div class="container-fluid">
+
+                <div class="row bg-light">
+
+
+                    <div class="col-4 d-flex align-items-center justify-content-start">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">Kampanyalar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">İndirimler</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">Yeni gelenler</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-4 d-flex align-items-center justify-content-center">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">Hakkımızda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">Basında biz</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#">Bize ulaşın</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#" style="font-size:1.2rem;"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#" style="font-size:1.2rem;"><i class="fab fa-whatsapp"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#" style="font-size:1.2rem;"><i class="fab fa-twitter"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" href="#" style="font-size:1.2rem;"><i class="fab fa-instagram"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-4" id="logo">
+                        <a href="/" style="text-decoration:none;"><h1>Linabutik.com</h1></a>
+                    </div>
+
+                    <div class="col-4 d-flex align-items-center justify-content-center">
+                        <form class="w-100">
+                            <input id="search-box" class="search-box" type="search" placeholder="Binlerce üründen istediğini ara...">
+                        </form>
+                    </div>
+
+                    <div class="col-4 d-flex align-items-center justify-content-end">
+                        <ul class="nav ">
+                            <!-- Icons -->
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" style="font-size:1.2rem; text-align:center;" href="#">
+                                    <i class="fas fa-user"></i>
+                                    <span class="d-block">Kullanıcılar</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" style="font-size: 1.2rem; text-align: center;" href="/Favorite/">
+                                    <i class="fas fa-star"></i>
+                                    <span class="d-block">Favoriler</span>
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link link-dark" style="font-size:1.2rem; text-align:center;" href="/Basket/">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <span class="d-block">Sepet</span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded-bottom">
+                            <div class="container-fluid">
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav w-100 justify-content-between">
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="/Sale/UrunList?Kategori=Elbise">Elbise</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="/Sale/UrunList?Kategori=Eşofman">Eşofman</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="#">Üst Giyim</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="#">Alt Giyim</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="/Sale/UrunList?Kategori=Ayakkabı">Ayakkabı</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="#">Takı/Aksesuar</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link link-dark " href="/Panel/Index">Panel'e dön</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="w-100 mt-4 position-relative d-flex align-items-center" style="height: 300px; background-color: #A54DA1;">
+        <div class="container-fluid">
+            <div class="row justify-content-between">
+                <div class="col-3 d-flex align-items-center" id="logo">
+                    <a href="/" style="text-decoration:none;"><h1 style="color: #FFF;">Linabutik.com</h1></a>
+                </div>
+                <div class="col-2 align-items-center d-flex">
+                    <div class="row">
+                        <div class="d-block">
+                            <div class="col">
+                                <h6 class="mb-3 mb-lg-4 bold-text "><b>Kurumsal</b></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Hakkımızda</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">İnsan kaynakları</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Kariyer</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Destek</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">İletişim</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-items-center d-flex">
+                    <div class="row">
+                        <div class="d-block">
+                            <div class="col">
+                                <h6 class="mb-3 mb-lg-4 bold-text "><b>Kategoriler</b></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Elbise</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Üst Giyim</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Alt Giyim</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Ayakkabı</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Takı/Aksesuar</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-items-center d-flex">
+                    <div class="row">
+                        <div class="d-block">
+                            <div class="col">
+                                <h6 class="mb-3 mb-lg-4 bold-text "><b>Markalar</b></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Zara</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Bershka</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Addax</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Nike</a></li>
+                                    <li><a href="#" class="text-decoration-none" style="color:#FFF;">Defacto</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 align-items-center d-flex">
+                    <div class="row">
+                        <div class="d-block">
+                            <div class="col">
+                                <h6 class="mb-3 mb-lg-4 bold-text "><b>Sosyal Medya</b></h6>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <!-- Facebook -->
+                                        <a class="btn btn-outline-light btn-floating m-1" href="#" role="button">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <!-- Instagram -->
+                                        <a class="btn btn-outline-light btn-floating m-1" href="#" role="button">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <!-- Twitter -->
+                                        <a class="btn btn-outline-light btn-floating m-1" href="#" role="button">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="position-absolute w-100 d-flex justify-content-center" style="bottom:5px; left:0;">
+                    <span style="color:#FFF;">Copyright © 2020 <a href="https://www.selmankoyan.com/" style="color:#FFF; text-decoration:none;">Selman KOYAN</a>. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

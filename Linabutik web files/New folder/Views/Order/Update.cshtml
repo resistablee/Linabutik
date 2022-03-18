@@ -1,0 +1,38 @@
+﻿@model _201224_LinaButikPanel.Models.Orders
+@{
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Siparişler</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Sipariş numarası: @Model.OrderNO</li>
+</ol>
+<hr />
+
+@using (Html.BeginForm("Update", "Order", FormMethod.Post))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Id)
+        @Html.TextBoxFor(x => x.Id, new { @class = "form-control", @readonly = "True" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.OrderStatusID)
+        @Html.DropDownListFor(x => x.OrderStatusID, (List<SelectListItem>)ViewBag.oStatus, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Cargo.TruckNumber)
+        @Html.TextBoxFor(x => x.Cargo.TruckNumber, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.AddressID)
+        @Html.TextBoxFor(x => x.AddressID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.AddressID, "", new { @style = "color: red;" })
+    </div>
+
+    <button type="submit" class="btn btn-success">Güncelle</button>
+}

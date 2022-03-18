@@ -1,0 +1,54 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<Basket>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h2>Sepet</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Sepet</li>
+</ol>
+<hr />
+@using (Html.BeginForm("Add", "Order", FormMethod.Post))
+{
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col">
+                <table class="table mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Müşteri adı soyadı</th>
+                            <th>Ürün modeli</th>
+                            <th>Ürün adı</th>
+                            <th>Marka</th>
+                            <th>Renk</th>
+                            <th>Beden</th>
+                            <th>Adet</th>
+                            <th>Birim fiyat</th>
+                            <th>Toplam</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Customer.NameSurname</td>
+                            <td>@item.Product.ProductCode</td>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Product.Brand.Brand</td>
+                            <td>@item.Product.Color.Property</td>
+                            <td>@item.Product.Size.Property</td>
+                            <td>@item.Piece</td>
+                            <td>@item.Product.Price TL</td>
+                            <td>@(item.Product.Price * item.Piece) TL</td>
+                            <td>@item.Product.Stock</td>
+                        </tr>
+                    }
+                </table>
+                <button type="submit" class="btn btn-warning">Sipariş ver</button>
+            </div>
+        </div>
+    </div>
+}

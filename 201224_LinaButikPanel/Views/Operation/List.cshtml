@@ -1,0 +1,40 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<Operations>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Operasyonlar</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Operasyon listesi</li>
+</ol>
+<hr />
+
+
+<table class="table mt-3">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>İşlem tipi</th>
+            <th>İşlem yapan kişi tipi</th>
+            <th>İşlem yapan kişi</th>
+            <th>Hostname</th>
+            <th>GMT</th>
+            <th>Detay</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr onclick="location.href = '#'">
+            <td>@item.Id</td>
+            <td>@item.OperationType.Property</td>
+            <td>@item.PersonType.Property</td>
+            <td>@item.Person</td>
+            <td>@item.Hostname</td>
+            <td>@item.GMT</td>
+            <td>@Html.ActionLink("Detay", "Detail", "Customer", new { pId = item.Id }, new { @class = "btn btn-warning" })</td>
+        </tr>
+    }
+</table>

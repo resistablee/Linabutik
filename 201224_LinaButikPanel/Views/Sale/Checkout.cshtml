@@ -1,0 +1,265 @@
+﻿@using _201224_LinaButikPanel.Models
+@model Orders
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<style type="text/css">
+
+    .card {
+        padding: 30px 25px 35px 50px;
+        border-radius: 30px;
+        box-shadow: 0px 4px 8px 0px #A54DA1;
+        margin-top: 50px;
+        margin-bottom: 50px
+    }
+
+    .border-line {
+        border-right: 1px solid #BDBDBD
+    }
+
+    .text-sm {
+        font-size: 13px
+    }
+
+    .text-md {
+        font-size: 18px
+    }
+
+    ::placeholder {
+        color: grey;
+        opacity: 1
+    }
+
+    :-ms-input-placeholder {
+        color: grey
+    }
+
+    ::-ms-input-placeholder {
+        color: grey
+    }
+
+    .credit-card-info {
+        padding: 2px 0px;
+        border: none;
+        border-bottom: 1px solid lightgrey;
+        margin-bottom: 5px;
+        margin-top: 2px;
+        box-sizing: border-box;
+        color: #000;
+        font-size: 16px;
+        letter-spacing: 1px;
+        font-weight: 500
+    }
+
+        .credit-card-info:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border-bottom: 1px solid #A54DA1;
+            outline-width: 0
+        }
+
+    /*    button:focus {
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        outline-width: 0
+    }*/
+
+    .btn-pay {
+        background-color: #A54DA1;
+        color: #fff;
+        padding: 8px 25px;
+        border-radius: 50px;
+        font-size: 18px;
+        letter-spacing: 2px;
+        border: 2px solid #fff;
+    }
+
+        .btn-pay:hover {
+            box-shadow: 0 0 0 2px #A54DA1;
+            color: #FFF;
+        }
+
+        .btn-pay:focus {
+            box-shadow: 0 0 0 2px #A54DA1 !important
+        }
+
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: #A54DA1
+    }
+</style>
+
+
+@using (Html.BeginForm("Add", "Order", FormMethod.Post, new { @id = "PaymentForm" }))
+{
+    <div class="row d-flex justify-content-center mx-auto">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-sm-11">
+            <div class="card border-0">
+                <div class="row justify-content-center">
+                    <h3 class="mb-4">Banka kartı ile ödeme</h3>
+                </div>
+                <div class="row">
+                    <div class="col border-line pb-3">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardOnName, new { @class = "text-muted text-sm mb-0 w-100" })
+                            <div class="row px-3">
+                                @Html.TextBoxFor(x => x.CardOnName, new { @type = "text", @class = "credit-card-info" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardNumber, new { @class = "text-muted text-sm mb-0 w-100" })
+                            <div class="row px-3">
+                                @Html.TextBoxFor(x => x.CardNumber, new { @type = "text", @class = "credit-card-info", @minlength = "19", @maxlength = "19" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardExpirationDate, new { @class = "text-muted text-sm mb-0 w-100" })
+                            <div class="row px-3">
+                                @Html.TextBoxFor(x => x.CardExpirationDate, new { @type = "text", @class = "credit-card-info", @minlength = "5", @maxlength = "7" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CardSecurityCode, new { @class = "text-muted text-sm mb-0 w-100" })
+                            <div class="row px-3">
+                                @Html.TextBoxFor(x => x.CardSecurityCode, new { @type = "password", @class = "credit-card-info", @placeholder = "CVV", @minlength = "3", @maxlength = "3" })
+                            </div>
+                        </div>
+                        <div class="form-group mb-0">
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input id="chk1" type="checkbox" name="chk" class="custom-control-input" checked>
+                                <label for="chk1" class="custom-control-label text-muted text-sm">Kart bilgilerimi kaydet</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 text-sm-center justify-content-center pt-0 pb-0">
+                        <div class="card-wrapper mb-4"></div>
+                        @*<small class="text-sm text-muted">Order number</small>
+                            <h5 class="mb-5">12345678</h5>*@
+                        <small class="text-sm text-muted">Sipariş tutarı</small>
+                        <div class="row px-3 justify-content-sm-center">
+                            <h2 class=""><span class="text-md font-weight-bold mr-2">₺</span><span style="color:#A54DA1;">@ViewBag.total</span></h2>
+                        </div> <button type="button" id="pay" class="btn btn-pay text-center mt-1">Ödeme yap</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Content/card-master/card-master/dist/jquery.card.js"></script>
+
+<script type="text/javascript">
+
+    //Input kart no mask
+    //$(document).ready(function () {
+
+    //    //For Card Number formatted input
+    //    var cardNum = document.getElementById('CardNumber');
+    //    cardNum.onkeyup = function (e) {
+    //        if (this.value == this.lastValue) return;
+    //        var caretPosition = this.selectionStart;
+    //        var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+    //        var parts = [];
+
+    //        for (var i = 0, len = sanitizedValue.length; i < len; i += 4) { parts.push(sanitizedValue.substring(i, i + 4)); } for (var i = caretPosition - 1; i >= 0; i--) {
+    //            var c = this.value[i];
+    //            if (c < '0' || c > '9') {
+    //                caretPosition--;
+    //            }
+    //        }
+    //        caretPosition += Math.floor(caretPosition / 4);
+
+    //        this.value = this.lastValue = parts.join(' ');
+    //        this.selectionStart = this.selectionEnd = caretPosition;
+    //    }
+    //});
+
+    //    //For Date formatted input
+    //    var expDate = document.getElementById('CardExpirationDate');
+    //    expDate.onkeyup = function (e) {
+    //        if (this.value == this.lastValue) return;
+    //        var caretPosition = this.selectionStart;
+    //        var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+    //        var parts = [];
+
+    //        for (var i = 0, len = sanitizedValue.length; i < len; i += 2) { parts.push(sanitizedValue.substring(i, i + 2)); } for (var i = caretPosition - 1; i >= 0; i--) {
+    //            var c = this.value[i];
+    //            if (c < '0' || c > '9') {
+    //                caretPosition--;
+    //            }
+    //        }
+    //        caretPosition += Math.floor(caretPosition / 2);
+
+    //        this.value = this.lastValue = parts.join('/');
+    //        this.selectionStart = this.selectionEnd = caretPosition;
+    //    }
+
+    //});
+
+    //Ödeme yap butonu
+    $(document).ready(function () {
+        $('#pay').click(function (e) {
+            var formdata = $('#PaymentForm').serialize();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/Order/Add',
+                data: formdata,
+                success: function (data) {
+                    if (data == 1) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Siparişiniz alındı!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/";
+                            }
+                        });
+                    }
+                    else if (data == 2) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'info',
+                            title: 'Doğrulama hatası!',
+                            text: 'Kart bilgileri yanlış!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                    else if (data == 3) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Bilgi hatası!',
+                            text: 'Teknik bir hata meydana geldi!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                }
+            });
+        });
+    });
+
+    //Credit Card
+    var card = new Card({
+        form: document.getElementById("PaymentForm"),
+        container: '.card-wrapper',
+        placeholders: {
+            number: '•••• •••• •••• ••••',
+            name: 'Ad soyad',
+            expiry: '••/••',
+            cvc: '•••'
+        },
+        formSelectors: {
+            numberInput: 'input#CardNumber',
+            expiryInput: 'input#CardExpirationDate',
+            cvcInput: 'input#CardSecurityCode',
+            nameInput: 'input#CardOnName'
+        }
+    });
+</script>

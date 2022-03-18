@@ -1,0 +1,29 @@
+﻿@using _201224_LinaButikPanel.Models
+@model List<OrderDetails>
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h2>Siparişler</h2>
+<br />
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Sipariş numarası: asdsa</li>
+</ol>
+<hr />
+<h3>sipariş detay sayfası</h3>
+@foreach (var item in Model)
+{
+    <h5>Detay Id: @item.Id</h5>
+    <h5>Sipariş No: @item.Id</h5>
+    <h5>Ürün adı: @item.Product.Name</h5>
+    <h5>Sipariş durumu: @item.OrderStatus.Property</h5>
+    <h5>Birim fiyat: @item.UnitPrice</h5>
+    <h5>Adet: @item.Piece</h5>
+    <h5>Toplam: @item.Total</h5>
+    if (item.CargoID != null)
+    {
+        <h5>Kargo takip no: @item.Cargo.TruckNumber</h5>
+    }
+    <hr />
+}

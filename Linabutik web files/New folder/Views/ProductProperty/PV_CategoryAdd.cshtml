@@ -1,0 +1,54 @@
+﻿@using _201224_LinaButikPanel.Models
+@model Features
+@using (Html.BeginForm("CategoryAdd", "ProductProperty", FormMethod.Post, new { @Id = "cAdd" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Property)
+        @Html.TextBoxFor(x => x.Property, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Property, "", new { @style = "color: red;" })
+    </div>
+
+    <button type="button" id="btnsubmit" value="submit" class="btn btn-success">Ekle</button>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnsubmit').click(function (e) {
+            var valdata = $('#cAdd').serialize();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/ProductProperty/CategoryAdd',
+                data: valdata,
+                success: function (data) {
+                    if (data) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Kategori eklendi!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/ProductProperty/Categories";
+                            }
+                            else {
+                                Swal.fire('Hata Oluştu!', 'İşlem sırasında hata oluştu?', 'warning');
+                                return false;
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'İşlem sırasında bir hata meydana geldi!'
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
